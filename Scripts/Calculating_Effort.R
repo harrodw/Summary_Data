@@ -95,3 +95,45 @@ glimpse(rec_info)
 rec_info |> 
   filter(if_any(everything(), is.na))
 
+# Counts of morning vs night surveys
+rec_info |> 
+  count(Morning)
+
+# Unique nights surveyed for frogs wiuth at leat 
+rec_nights <-  rec_info |> 
+  filter(Morning == 0) |> 
+  mutate(date = as_date(date.time)) |> 
+  count(date) 
+
+# View unique nights
+rec_nights |> 
+  print(n = Inf)
+
+# View the total number of nights
+nrow(rec_nights)
+
+# total minutes of nighttime recording
+rec_info |> 
+  filter(Morning == 0) |> 
+  nrow() * 5
+
+# Unique days surveyed for frogs wiuth at leat 
+rec_days <-  rec_info |> 
+  filter(Morning == 1) |> 
+  mutate(date = as_date(date.time)) |> 
+  count(date) 
+
+# View unique nights
+rec_days |> 
+  print(n = Inf)
+
+# View the total number of nights
+nrow(rec_days)
+
+# total minutes of nighttime recording
+rec_info |> 
+  filter(Morning == 1) |> 
+  nrow() * 60 
+
+# Save the output
+write.csv(rec_info, "Data/bird_frog_aru_info.csv")
